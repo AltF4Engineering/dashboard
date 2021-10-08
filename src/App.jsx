@@ -1,12 +1,16 @@
 import Dashboard from "./components/dashboard";
 import Map from "./components/map";
+import store from "./components/store";
+import { Provider } from "react-redux";
 
 function App() {
   return (
-    <div className="App">
-      <Dashboard />
-      <Map />
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        <Dashboard />
+        <Map />
+      </div>
+    </Provider>
   );
 }
 
