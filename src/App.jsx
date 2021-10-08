@@ -5,6 +5,7 @@ function App() {
   return (
     <div className="App">
       <Dashboard />
+      <Map />
     </div>
   );
 }
