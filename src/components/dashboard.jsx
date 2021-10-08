@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import List from "@mui/material/List";
 import InputBase from "@mui/material/InputBase";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
@@ -15,7 +16,13 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
+import ListItem from "@mui/material/ListItem";
 import profileImg from "../images/marker.png";
+import Button from "@mui/material/Button";
+import ListItemButton from "@mui/material/ListItemButton";
+import { ListItemText } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
+import { setJumpTo } from "./map-slice";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -59,6 +66,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function Dashboard() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [searched, setSearched] = React.useState("");
+  const locations = useSelector((state) => state.map.locations);
+  const dispatch = useDispatch();
   const isMenuOpen = Boolean(anchorEl);
 
   const handleProfileMenuOpen = (event) => {
@@ -67,6 +77,12 @@ export default function Dashboard() {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const requestSearch = (searchedVal) => {};
+  const cancelSearch = () => {
+    setSearched("");
+    requestSearch(searched);
   };
 
   const menuId = "primary-search-account-menu";
@@ -128,24 +144,12 @@ export default function Dashboard() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" enableColorOnDark>
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
+          <Button></Button>
+          <Search
+            value={searched}
+            onChange={(searchVal) => requestSearch(searchVal)}
+            onCancelSearch={() => cancelSearch()}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
-          >
-            Dashboard
-          </Typography>
-          <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -170,6 +174,19 @@ export default function Dashboard() {
           </Box>
         </Toolbar>
       </AppBar>
+      {/* <List>
+        {locations.map((location) => (
+          <ListItem disablePadding>
+            <ListItemButton
+              component="a"
+              href="#simple-list"
+              onClick={dispatch(setJumpTo(location.name))}
+            >
+              <ListItemText primary={location.name} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List> */}
       {renderMenu}
     </Box>
   );
